@@ -1,1 +1,11 @@
 kadjakdjbakdbk
+
+
+terraform -chdir=./terraform/environments/dev init -reconfigure
+terraform -chdir=./terraform/environments/dev plan
+terraform -chdir=./terraform/environments/dev apply -auto-approve
+
+
+terraform -chdir=./terraform/environments/prod init
+terraform -chdir=./terraform/environments/prod plan
+terraform -chdir=./terraform/environments/prod apply -auto-approve
