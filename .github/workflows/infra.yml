@@ -1,1 +1,37 @@
+name: Infra Deployment Nimet
+
+on:
+    workflow_dispatch:
+    push:
+
+
+env:
+    ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+    ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+    ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+
+jobs:
+  deploy_dev_nimet:
+    name: Provision Reousrces
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Install hashicapr
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Run dev commands
+        run: |
+            terraform -chdir=./terraform/environments/dev init
+            terraform -chdir=./terraform/environments/dev plan
+            terraform -chdir=./terraform/environments/dev apply -auto-approve
+
+      - name: Run prod commands
+        run: |
+            terraform -chdir=./terraform/environments/prod init
+            terraform -chdir=./terraform/environments/prod plan
+            terraform -chdir=./terraform/environments/prod apply -auto-approve
+         
 
